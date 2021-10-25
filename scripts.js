@@ -32,8 +32,7 @@ function CoupleTube(gap, position) {
     this.getWidth = () => this.coupleTube.clientWidth
     this.getNewHeight = gap => {
         first = Math.floor(Math.random() * (gap - 10) + 10),
-        second = gap - first
-        console.log(first, second)
+            second = gap - first
         this.top.body.style.height = `${first}px`
         this.bottom.body.style.height = `${second}px`
     }
@@ -52,18 +51,60 @@ function getTubes(gap, position, space, steps) {
 
     animate = () => {
         this.tubes.forEach(tube => {
-            tube.setX(tube.getX() - steps)
+            tube.setX(tube.getX() - steps - 1)
             if (tube.getX() < -tube.getWidth()) {
                 tube.setX(tube.getX() + space * this.tubes.length)
                 tube.getNewHeight(gap)
             }
+
         })
     }
 }
 
+function bird(maxHeight) {
+    this.element = createElement('img', 'bird')
+    this.element.src = 'assets/img/bird.png'
+    
+    let isUpping = false
+    let birdHeight = 100
+    this.maxVelocity = 0.1
+
+    document.addEventListener('click', () => {
+        this.setPoint = birdHeight + 70
+        this.error = (this.setPoint - birdHeight) / 10
+        this.maxVelocity = 0.1;
+        isUpping = true
+    })
+
+    document.querySelector('.environment').appendChild(this.element)
+    this.jump = () => {
+        if (isUpping) {
+            if (birdHeight <= maxHeight && this.error > -0.37) {
+                this.error = (this.setPoint - birdHeight) / 10
+                birdHeight += (this.error * 2) + 1.5;
+                this.element.style.bottom = `${birdHeight}px`
+                this.element.style.transform = "rotate("+(-this.error+0.37)*2+"deg)";
+            } else  isUpping = false
+        } else {
+            this.error = (-birdHeight - 100) / 100
+            if (birdHeight > 0) {
+                this.maxVelocity += 0.5
+                birdHeight -= this.maxVelocity;
+            }  else birdHeight = 0 
+            this.element.style.bottom = `${birdHeight}px`
+            this.element.style.transform = "rotate("+this.maxVelocity*2+"deg)";
+        }
+    }
+    this.jump()
+}
+
 window.addEventListener("load", () => {
     getTubes(500, 1, 400, 3)
-    setInterval(() => this.animate(), 25)
+    setInterval(() => {
+        this.animate()
+        this.jump()
+    }, 20)
+    bird(640)
 })
 
 
