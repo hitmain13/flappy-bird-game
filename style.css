@@ -80,5 +80,6 @@ div.environment {
     top: 10px;
     right: 20px;
     font-family: 'Pixel';
-    font-size: 32px;
+    font-size: 64px;
+    z-index: 2;
 }

@@ -31,8 +31,8 @@ function CoupleTube(gap, position) {
     this.setX = x => this.coupleTube.style.left = `${x}px`
     this.getWidth = () => this.coupleTube.clientWidth
     this.getNewHeight = gap => {
-        first = Math.floor(Math.random() * (gap - 10) + 10),
-            second = gap - first
+        first = Math.floor(Math.random() * (gap - 10) + 10)
+        second = gap - first
         this.top.body.style.height = `${first}px`
         this.bottom.body.style.height = `${second}px`
     }
@@ -48,27 +48,30 @@ function getTubes(gap, position, space, steps) {
         new CoupleTube(gap, position + space * 2),
         new CoupleTube(gap, position + space * 3)
     ]
-
-    animate = () => {
-        this.tubes.forEach(tube => {
-            tube.setX(tube.getX() - steps - 1)
-            if (tube.getX() < -tube.getWidth()) {
-                tube.setX(tube.getX() + space * this.tubes.length)
-                tube.getNewHeight(gap)
-            }
-
-        })
+    animate = (isCrached) => {
+        if (!isCrached) {
+            this.tubes.forEach(tube => {
+                tube.setX(tube.getX() - steps)
+                if (tube.getX() < -tube.getWidth()) {
+                    tube.setX(tube.getX() + space * this.tubes.length)
+                    tube.getNewHeight(gap)
+                }
+                const middle = tube.getWidth() / 2
+                if (tube.getX() + steps >= 600 - middle
+                    && tube.getX() + steps < 600 + steps - middle) this.addPoint()
+            })
+        }
     }
 }
 
 function bird(maxHeight) {
-    this.element = createElement('img', 'bird')
-    this.element.src = 'assets/img/bird.png'
-    
-    let isUpping = false
-    let birdHeight = 100
-    this.maxVelocity = 0.1
+    this.bird = createElement('img', 'bird')
+    this.bird.src = 'assets/img/bird.png'
+    document.querySelector('.environment').appendChild(this.bird)
 
+    let isUpping = false
+    let birdHeight = 350
+    this.maxVelocity = 0.1
     document.addEventListener('click', () => {
         this.setPoint = birdHeight + 70
         this.error = (this.setPoint - birdHeight) / 10
@@ -76,49 +79,71 @@ function bird(maxHeight) {
         isUpping = true
     })
 
-    document.querySelector('.environment').appendChild(this.element)
-    this.jump = () => {
+    jump = () => {
         if (isUpping) {
             if (birdHeight <= maxHeight && this.error > -0.37) {
                 this.error = (this.setPoint - birdHeight) / 10
                 birdHeight += (this.error * 2) + 1.5;
-                this.element.style.bottom = `${birdHeight}px`
-                this.element.style.transform = "rotate("+(-this.error+0.37)*2+"deg)";
-            } else  isUpping = false
+                this.bird.style.bottom = `${birdHeight}px`
+                this.bird.style.transform = "rotate(" + (-this.error + 0.37) * 2 + "deg)";
+            } else isUpping = false
         } else {
             this.error = (-birdHeight - 100) / 100
             if (birdHeight > 0) {
                 this.maxVelocity += 0.5
                 birdHeight -= this.maxVelocity;
-            }  else birdHeight = 0 
-            this.element.style.bottom = `${birdHeight}px`
-            this.element.style.transform = "rotate("+this.maxVelocity*2+"deg)";
+            } else birdHeight = 0
+            this.bird.style.bottom = `${birdHeight}px`
+            this.bird.style.transform = "rotate(" + this.maxVelocity * 2 + "deg)";
         }
     }
-    this.jump()
+    getY = () => Math.round(this.bird.style.bottom.split('px')[0])
 }
 
-window.addEventListener("load", () => {
-    getTubes(450, 1300, 400, 3)
-    setInterval(() => {
-        this.animate()
-        this.jump()
-    }, 15)
-    bird(640)
-})
+function colision(elementA, elementB) {
+    const a = elementA.getBoundingClientRect()
+    const b = elementB.getBoundingClientRect()
 
+    const horizontal = a.left + a.width - 15 >= b.left
+        && b.left + b.width - 15 >= a.left
+    const vertical = a.top + a.height >= b.top
+        && b.top + b.height >= a.top
+    return horizontal && vertical
+}
 
+function isCrached() {
+    let crashed = false
+    this.tubes.forEach(CoupleTube => {
+        if (!crashed) {
+            const top = CoupleTube.top.element
+            const bottom = CoupleTube.bottom.element
+            crashed = colision(this.bird, top)
+                || colision(this.bird, bottom)
+        }
+    })
+    return crashed
+}
 
+function progress() {
+    this.progress = createElement('div', 'progress')
+    document.querySelector('.environment').appendChild(this.progress).innerHTML = 0
 
-/*<img class="bird" src="/assets/img/bird.png" alt="bird">
-        <div class="couple-tube">
-            <div class="tube">
-                <div class="bodytube"></div>
-                <div class="headtube"></div>
-            </div>
-            <div class="tube">
-                <div class="headtube"></div>
-                <div class="bodytube"></div>
-            </div>
-        </div>
-        <div class="progress">100</div> */
+    this.addPoint = function () {
+        this.progress.innerHTML++
+    }
+}
+
+function start() {
+    window.addEventListener("load", () => {
+        getTubes(450, 1200, 400, 4)
+        progress()
+        bird(640)
+        const timer = setInterval(() => {
+            if(isCrached(this.bird, getTubes)) clearInterval(timer)
+            this.animate()
+            jump()
+        }, 15)
+    })
+}
+
+start()
