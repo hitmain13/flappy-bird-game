@@ -21,3 +21,5 @@ Carried out in order to improve knowledge/experience in programming concepts usi
 - Open the file "index.html" in your favorite browser;
 
 - Enjoy the game!
+
+Feel free to collaborate with the project!
