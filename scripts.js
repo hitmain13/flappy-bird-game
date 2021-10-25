@@ -99,11 +99,11 @@ function bird(maxHeight) {
 }
 
 window.addEventListener("load", () => {
-    getTubes(500, 1, 400, 3)
+    getTubes(450, 1300, 400, 3)
     setInterval(() => {
         this.animate()
         this.jump()
-    }, 20)
+    }, 15)
     bird(640)
 })
 
