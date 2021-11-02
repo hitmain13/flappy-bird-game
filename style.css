@@ -39,7 +39,7 @@ div.environment {
     border: 5px solid black;
     overflow: hidden;
     background-image: url('https://user-images.githubusercontent.com/18351809/46888871-624a3900-ce7f-11e8-808e-99fd90c8a3f4.png');
-    background-size: 110%;
+    background-size: 105%;
 }
 
 .bird {
@@ -133,7 +133,6 @@ p.points {
     font-size: 2rem;
     font-family: 'Pixel';
     color: ghostwhite;
-    transition: 0.5s;
 }
 
 b {
