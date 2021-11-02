@@ -133,6 +133,7 @@ p.points {
     font-size: 2rem;
     font-family: 'Pixel';
     color: ghostwhite;
+    transition: 0.5s;
 }
 
 b {

@@ -105,6 +105,13 @@ function bird(maxHeight) {
 }
 
 const Sound = {
+    Start() {
+        const URL = "./assets/soundeffect/sfx_swooshing.wav"
+        const track = new Audio(URL)
+        track.volume = 0.3
+        track.addEventListener("canplaythrough", () => track.play())
+    },
+
     Wing() {
         const wingURL = "./assets/soundeffect/sfx_wing.wav"
         const wing = new Audio(wingURL)
@@ -199,15 +206,15 @@ function setup() {
     progress()
     bird(640)
     initialPage();
-    setInterval(() => Sound.Track(), 44000)
+    if (init) setInterval(() => Sound.Track(), 44000)
     window.addEventListener('mousedown' || 'touchstart', () => {
-        if (!init && !isCrached(this.bird, getTubes)) {
+        if (!init && !isCrached(this.bird, getTubes) && !gameOver) {
             init = true
             Sound.Track()
             document.querySelector('.initial').classList.remove('show')
             start()
         }
-        else if (!init && isCrached(this.bird, getTubes)) {
+        else if (!init && gameOver) {
             setTimeout(() => {
                 window.location.reload();
             }, 750)
@@ -221,6 +228,7 @@ function start() {
             Sound.Dying()
             clearInterval(timer)
             init = false
+            gameOver = true
             GameOver()
         }
         this.animate()
@@ -241,7 +249,8 @@ function GameOver() {
         record = Storage.get()
     }
     message.innerHTML = "Game Over!"
-    points.innerHTML = `Your record is <u><b>${record}</b></u>`
+    points.innerHTML = `Your record is <b>${record}</b>`
 }
 var init = false
+var gameOver = false
 setup()
