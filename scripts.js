@@ -58,7 +58,10 @@ function getTubes(gap, position, space, steps) {
                 }
                 const middle = tube.getWidth() / 2
                 if (tube.getX() + steps >= 600 - middle
-                    && tube.getX() + steps < 600 + steps - middle) this.addPoint()
+                    && tube.getX() + steps < 600 + steps - middle) {
+                    Sound.PointUp()
+                    this.addPoint()
+                }
             })
         }
     }
@@ -72,7 +75,8 @@ function bird(maxHeight) {
     let isUpping = false
     let birdHeight = 350
     this.maxVelocity = 0.1
-    document.addEventListener('click', () => {
+    document.addEventListener('mousedown' || 'touchstart', () => {
+        if (!isCrached(this.bird, getTubes)) Sound.Wing()
         this.setPoint = birdHeight + 70
         this.error = (this.setPoint - birdHeight) / 10
         this.maxVelocity = 0.1;
@@ -97,7 +101,46 @@ function bird(maxHeight) {
             this.bird.style.transform = "rotate(" + this.maxVelocity * 2 + "deg)";
         }
     }
-    getY = () => Math.round(this.bird.style.bottom.split('px')[0])
+    getY = () => Math.round(this.bird.style.bottom.split('px')[0]);
+}
+
+const Sound = {
+    Wing() {
+        const wingURL = "./assets/soundeffect/sfx_wing.wav"
+        const wing = new Audio(wingURL)
+        wing.volume = 0.2
+        wing.addEventListener("canplaythrough", () => wing.play())
+    },
+
+    Dying() {
+        const hitURL = "./assets/soundeffect/sfx_hit.wav"
+        const dieURL = "./assets/soundeffect/sfx_die.wav"
+        const dying = new Audio(hitURL)
+        const die = new Audio(dieURL)
+        dying.volume = 0.2
+        die.volume = 0.2
+        dying.addEventListener("canplaythrough", () => dying.play())
+        die.addEventListener("canplaythrough", () => setTimeout(() => die.play(), 200)
+        )
+    },
+
+    Track() {
+        const URL = "./assets/soundeffect/EnergyTheme-Jextor.wav"
+        const track = new Audio(URL)
+        track.volume = 0.2
+        track.addEventListener("canplaythrough", () => {
+            if (track.currentTime === 0 || track.currentTime >= track.duration) track.play()
+        })
+    },
+
+    PointUp() {
+        const URL = "./assets/soundeffect/sfx_point.wav"
+        const pointUp = new Audio(URL)
+        pointUp.volume = 0.03
+        pointUp.addEventListener("canplaythrough", () => {
+            pointUp.play()
+        })
+    }
 }
 
 function colision(elementA, elementB) {
@@ -127,23 +170,78 @@ function isCrached() {
 function progress() {
     this.progress = createElement('div', 'progress')
     document.querySelector('.environment').appendChild(this.progress).innerHTML = 0
-
+    this.points = 0
     this.addPoint = function () {
-        this.progress.innerHTML++
+        this.points += 1
+        this.progress.innerHTML = this.points
+    }
+}
+const Storage = {
+    get() {
+        return JSON.parse(localStorage.getItem('flappy-bird-matsu:points')) || 0
+    },
+    set(points) {
+        localStorage.setItem("flappy-bird-matsu:points", JSON.stringify(points))
     }
 }
 
-function start() {
-    window.addEventListener("load", () => {
-        getTubes(450, 1200, 400, 4)
-        progress()
-        bird(640)
-        const timer = setInterval(() => {
-            if(isCrached(this.bird, getTubes)) clearInterval(timer)
-            this.animate()
-            jump()
-        }, 15)
+function initialPage() {
+    const div = createElement('div', 'initial')
+    div.classList.add('show')
+    const message = createElement('p', 'clickMe')
+    document.querySelector('.environment').appendChild(div)
+    document.querySelector('.initial').appendChild(message)
+    message.innerHTML = "Click to play"
+}
+
+function setup() {
+    getTubes(450, 1200, 400, 4)
+    progress()
+    bird(640)
+    initialPage();
+    setInterval(() => Sound.Track(), 44000)
+    window.addEventListener('mousedown' || 'touchstart', () => {
+        if (!init && !isCrached(this.bird, getTubes)) {
+            init = true
+            Sound.Track()
+            document.querySelector('.initial').classList.remove('show')
+            start()
+        }
+        else if (!init && isCrached(this.bird, getTubes)) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 750)
+        }
     })
 }
 
-start()
+function start() {
+    const timer = setInterval(() => {
+        if (isCrached(this.bird, getTubes)) {
+            Sound.Dying()
+            clearInterval(timer)
+            init = false
+            GameOver()
+        }
+        this.animate()
+        jump()
+    }, 15)
+}
+
+function GameOver() {
+    const div = createElement('div', 'gameOver')
+    const message = createElement('p', 'gameOver')
+    const points = createElement('p', 'points')
+    document.querySelector('.environment').appendChild(div)
+    document.querySelector('.gameOver').appendChild(message)
+    document.querySelector('.gameOver').appendChild(points)
+    let record = Storage.get()
+    if (!record || this.points > record) {
+        Storage.set(this.points)
+        record = Storage.get()
+    }
+    message.innerHTML = "Game Over!"
+    points.innerHTML = `Your record is <u><b>${record}</b></u>`
+}
+var init = false
+setup()

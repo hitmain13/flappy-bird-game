@@ -4,6 +4,12 @@
 
 * {
     box-sizing: border-box;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
 }
 
 body {
@@ -82,4 +88,54 @@ div.environment {
     font-family: 'Pixel';
     font-size: 64px;
     z-index: 2;
+}
+
+div.gameOver {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+div.initial  {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    z-index: 999;
+}
+
+div.initial.show  {
+    visibility: visible;
+}
+p.gameOver, p.clickMe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -150%);
+    font-size: 7.5rem;
+    font-family: 'Pixel';
+    color: ghostwhite;
+}
+p.points {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    font-size: 2rem;
+    font-family: 'Pixel';
+    color: ghostwhite;
+}
+
+b {
+    font-size: 2.5rem;
+    color: rgb(255, 255, 255);
 }
