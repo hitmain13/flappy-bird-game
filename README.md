@@ -37,3 +37,4 @@ You can click below and access the project by GitHub Pages:
 https://hitmain13.github.io/flappy-bird-game/
 
 Feel free to collaborate with the project!
+Developed during course "Web Moderno" from Udemy platform.
