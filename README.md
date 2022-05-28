@@ -5,9 +5,13 @@
 !["thumbnail"](https://github.com/hitmain13/flappy-bird-game/blob/main/assets/img/thumbnail.png)
 
 <h4 align="center">
+ [![licence mit](https://img.shields.io/badge/licence-MIT-blue.svg)](https://github.com/higorpo/higorflix/blob/master/LICENSE) [![siga-me](https://img.shields.io/github/followers/hitmain13?label=Siga-me&style=social)]()
+ 
 Built from scratch the famous Flappy Bird game using pure JavaScript. Project developed with inspiration from the Flappy Bird game. 
 Carried out in order to improve knowledge/experience in programming concepts using HTML, CSS & Javascript.
 </h4>
+
+
 
 ###### Technologies used:
  - HTML5;
