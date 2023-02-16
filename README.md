@@ -1,6 +1,12 @@
 <h1 align="center">
-🐦 Flappy Bird Clone 
+Flappy Bird
 </h1>
+
+### Jogue o jogo
+
+https://flappy-bird-luis.netlify.app
+
+Desenvolvido durante o curso "Web Moderno" da plataforma Udemy.
 
 !["thumbnail"](https://github.com/hitmain13/flappy-bird-game/blob/main/assets/img/thumbnail.png)
 
@@ -8,8 +14,7 @@
  
 [![licence mit](https://img.shields.io/badge/licence-MIT-blue.svg)](https://github.com/higorpo/higorflix/blob/master/LICENSE) [![siga-me](https://img.shields.io/github/followers/hitmain13?label=Siga-me&style=social)]()
  
-Built from scratch the famous Flappy Bird game using pure JavaScript. Project developed with inspiration from the Flappy Bird game. 
-Carried out in order to improve knowledge/experience in programming concepts using HTML, CSS & Javascript.
+Esse projeto foi desenvolvido utilizando JavaScript, HTML5 e CSS3, onde o HTML tem seu papel apenas como base index e o JavaScript cuida de toda lógica, manipulação e inserção de dados. Além disso, nesse projeto é tratado o bloqueio de seleção do conteúdo com CSS.
 </h4>
 
 
@@ -17,29 +22,21 @@ Carried out in order to improve knowledge/experience in programming concepts usi
 ###### Technologies used:
  - HTML5;
  - CSS3;
- - JavaScript (ES6)
+ - JavaScript
  - GIT (version control system)
  
- ###### Requirements:
+ ###### Requerimentos:
 
-- GIT installed;
+- GIT instalado;
 
-###### Procedures:
+###### Procedimentos:
 
-- Choose a repository to place the project;
+- Escolha um repositório para colocar o projeto;
 
-- On your terminal, run the command to clone the repository (git clone https://github.com/hitmain13/flappy-bird-game.git)
+- No seu terminal, execute o comando para clonar o repositório (git clone https://github.com/luisfelipe-tec/Flappy-Jogo.git)
 
-- Open the file "index.html" in your favorite browser;
+- Abra o arquivo "index.html" em seu navegador favorito;
 
-- Enjoy the game!
+- Aproveite o jogo!
 ---
 
-### Play the game
-
-You can click below and access the project by GitHub Pages: 
-
-https://hitmain13.github.io/flappy-bird-game/
-
-Feel free to collaborate with the project!
-Developed during course "Web Moderno" from Udemy platform.
